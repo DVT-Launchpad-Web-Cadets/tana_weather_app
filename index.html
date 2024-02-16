@@ -3,9 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>7-day Weather Forecast</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/solid.css">
+    <script src="https://kit.fontawesome.com/0d9546a1f6.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
-    
+    <div class="container">
+        <div class="heading">
+            <span>Weather</span> 
+            <div class="todaysdate">Friday, 16 February 2023</div>
+        </div>
+        <div class="major_cities_scroll">
+            <a href="">Johannesburg</a>
+            <a href="">Cape Town</a>
+            <a href="">London</a>
+            <a href="">Los Angeles</a>
+            <a href="">New York</a>
+            <a href="">Toronto</a>
+            <a href="">Melbourne</a>
+        </div>
+        <div class="weather_and_map">
+            <div class="forecast_today">
+                <div class="weather_icon"></div>
+                <div class="location_name">Johannesburg</div>
+                <div class="temp_ranges">20&deg;C - 27&deg;C</div>
+                <div class="weather_descr">Cloudy</div>
+            </div>
+            <div class="seven_day_forecast">
+                <div class="forecast_item">
+                    <div class="forecast_day">Saturday</div>
+                    <div class="forecast_icon"></div>
+                    <div class="forecast_temp_ranges">20&deg;C - 27&deg;C</div>
+                    <div class="forecast_descr">Cloudy</div>
+                </div>
+                <div class="forecast_item">
+                    <div class="forecast_day">Sunday</div>
+                    <div class="forecast_icon"></div>
+                    <div class="forecast_temp_ranges">20&deg;C - 27&deg;C</div>
+                    <div class="forecast_descr">Cloudy</div>
+                </div>
+                <div class="forecast_item">
+                    <div class="forecast_day">Monday</div>
+                    <div class="forecast_icon"></div>
+                    <div class="forecast_temp_ranges">20&deg;C - 27&deg;C</div>
+                    <div class="forecast_descr">Cloudy</div>
+                </div>
+                <div class="forecast_item">
+                    <div class="forecast_day">Tuesday</div>
+                    <div class="forecast_icon"></div>
+                    <div class="forecast_temp_ranges">20&deg;C - 27&deg;C</div>
+                    <div class="forecast_descr">Cloudy</div>
+                </div>
+                <div class="forecast_item">
+                    <div class="forecast_day">Wednesday</div>
+                    <div class="forecast_icon"></div>
+                    <div class="forecast_temp_ranges">20&deg;C - 27&deg;C</div>
+                    <div class="forecast_descr">Cloudy</div>
+                </div>
+                <div class="forecast_item">
+                    <div class="forecast_day">Thursday</div>
+                    <div class="forecast_icon"></div>
+                    <div class="forecast_temp_ranges">20&deg;C - 27&deg;C</div>
+                    <div class="forecast_descr">Cloudy</div>
+                </div>
+            </div>
+            <a href="#" class="map_button_float">
+                <i class="fa-solid fa-map-location-dot"></i>
+            </a>
+            <div class="map"></div>
+        </div>
+    </div>
 </body>
 </html>

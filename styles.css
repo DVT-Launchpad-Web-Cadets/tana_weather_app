@@ -1,0 +1,138 @@
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100svh;
+  background-color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.heading {
+  color: black;
+  span {
+    font: small-caps bold 3rem sans-serif;
+  }
+
+  .todaysdate {
+    height: 1.2rem;
+    background-color: aqua;
+    font: 1rem sans-serif;
+  }
+}
+
+.major_cities_scroll {
+  background-color: white;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.major_cities_scroll a {
+  display: inline-block;
+  color: black;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+.major_cities_scroll a:hover {
+  background-color: lightpink;
+}
+
+.weather_and_map {
+  display: flex;
+  flex-direction: column;
+
+  .forecast_today {
+    flex: 1 0 auto;
+    display: grid;
+    height: 7rem;
+    padding: 1rem;
+    padding-right: 0.8rem;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr 1fr 0.5fr;
+    grid-template-areas:
+      "location_name weather_icon"
+      "temp_ranges weather_icon"
+      "weather_descr weather_icon";
+    background-color: aqua;
+
+    .location_name {
+      grid-area: location_name;
+      font: small-caps 2rem sans-serif;
+    }
+
+    .temp_ranges {
+      grid-area: temp_ranges;
+      font-size: 2rem;
+    }
+
+    .weather_descr {
+      grid-area: weather_descr;
+      font-size: 1rem;
+    }
+
+    .weather_icon {
+      grid-area: weather_icon;
+    }
+  }
+
+  .seven_day_forecast {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+
+    .forecast_item {
+      display: grid;
+      height: 4rem;
+      grid-template-columns: 2fr 1fr 2.5fr;
+      grid-template-rows: 1.5fr 1fr;
+      grid-template-areas:
+        "forecast_day forecast_icon forecast_temp_ranges"
+        "forecast_day forecast_icon forecast_descr";
+
+      .forecast_day {
+        grid-area: forecast_day;
+        align-self: center;
+        justify-self: end;
+        font-size: 1.2rem;
+      }
+      .forecast_icon {
+        grid-area: forecast_icon;
+      }
+      .forecast_temp_ranges {
+        grid-area: forecast_temp_ranges;
+        align-self: end;
+        font-size: 1.5rem;
+      }
+      .forecast_descr {
+        grid-area: forecast_descr;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .map_button_float {
+    position: fixed;
+    width: 60px;
+    height: 30px;
+    top: 10px;
+    right: 10px;
+    background-color: #0c9;
+    color: #fff;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 25px;
+    box-shadow: 2px 2px 3px #999;
+  }
+
+  .map {
+    flex: 1 0 auto;
+    background-color: blue;
+    position: relative;
+    z-index: 10;
+  }
+}
