@@ -19,7 +19,7 @@ body {
     font: small-caps bold 3rem sans-serif;
   }
 
-  .todaysdate {
+  #todaysdate {
     height: 1.2rem;
     background-color: aqua;
     font: 0.85rem sans-serif;
@@ -63,17 +63,17 @@ body {
       "weather_descr weather_icon";
     background-color: aqua;
 
-    .location_name {
+    #location_name {
       grid-area: location_name;
       font: small-caps 2rem sans-serif;
     }
 
-    .temp_ranges {
+    #temp_ranges {
       grid-area: temp_ranges;
       font-size: 2rem;
     }
 
-    .weather_descr {
+    #weather_descr {
       grid-area: weather_descr;
       font-size: 1rem;
     }
