@@ -119,12 +119,12 @@ body {
     }
   }
 
-  .map_button_float {
+  #map_button_float {
     position: fixed;
     width: 4rem;
     height: 2rem;
     top: 1rem;
-    right: 1rem;
+    right: 1.5rem;
     background-color: #0c9;
     color: #fff;
     border-radius: 50px;
@@ -133,13 +133,24 @@ body {
     box-shadow: 2px 2px 3px #999;
   }
 
-  .map {
+  #map {
     display: none;
     height: 100%;
     width: 100%;
     position: fixed;
     z-index: 10;
     background-color: white;
+
+    #close_map_button {
+      text-decoration: none;
+      font-size: 1rem;
+      background-color: lightgrey;
+      color: white;
+      padding: 0.5rem;
+      border-radius: 1rem;
+      position: fixed;
+      right: 1.5rem;
+    }
   }
 }
 

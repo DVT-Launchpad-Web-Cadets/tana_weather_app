@@ -1,9 +1,11 @@
 import { getWeatherData } from "./api.js";
 import { setDOM } from "./dom.js";
 
+// EVENT LISTENERSSS
 window.addEventListener("load", (event) => {
   getCoords("Johannesburg");
 });
+
 // The user should be able to click on a major city
 // to get the weather for that location
 const majorCities = document.querySelectorAll(".major_cities_scroll a");
@@ -12,6 +14,18 @@ majorCities.forEach((city) => {
     console.log(city.innerText);
     getCoords(city.innerText);
   });
+});
+
+// map listeners
+const map_div = document.getElementById("map");
+const open_map = document.getElementById("map_button_float");
+open_map.addEventListener("click", function (e) {
+  map_div.style.display = "block";
+});
+
+let close_map = document.getElementById("close_map_button");
+close_map.addEventListener("click", function (e) {
+  map_div.style.display = "none";
 });
 
 async function getCoords(city) {
@@ -45,4 +59,10 @@ function callTheWeatherAPI(longitude, latitude, city) {
     .finally(() => {
       // cleanup
     });
+}
+
+function closeMap() {
+  let map_div = document.getElementById("map");
+  console.log("clicked");
+  map_div.style.display = none;
 }
