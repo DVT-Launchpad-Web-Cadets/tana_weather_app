@@ -1,7 +1,9 @@
 import { getWeatherData } from "./api.js";
 import { setDOM } from "./dom.js";
 
-console.log("hello");
+window.addEventListener("load", (event) => {
+  getCoords("Johannesburg");
+});
 // The user should be able to click on a major city
 // to get the weather for that location
 const majorCities = document.querySelectorAll(".major_cities_scroll a");
