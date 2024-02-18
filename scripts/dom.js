@@ -83,7 +83,7 @@ function getWeatherDescription(weather) {
       return "Clear";
       break;
     case "cloudy":
-      return "Cloudy";
+      return "Overcast";
       break;
     case "lightrain":
       return "Light rain";
@@ -92,7 +92,7 @@ function getWeatherDescription(weather) {
       return "Partly cloudy";
       break;
     case "ts":
-      return "Thunderstorm";
+      return "Isolated thunderstorms";
       break;
     case "snow":
       return "Snow";
@@ -104,10 +104,25 @@ function getWeatherDescription(weather) {
       return "Thunderstorm";
       break;
     case "mcloudy":
-      return "Partly Cloudy";
+      return "Cloudy";
+      break;
+    case "humid":
+      return "Foggy";
+      break;
+    case "oshower":
+      return "Occasional showers";
+      break;
+    case "ishower":
+      return "Isolated showers";
+      break;
+    case "lightsnow":
+      return "Light snow";
+      break;
+    case "rainsnow":
+      return "Ice pellets/Freezing rain";
       break;
     default:
-      return "";
+      return "Windy";
   }
 }
 
@@ -116,17 +131,46 @@ function getTempRangesString(mintemp, maxtemp) {
 }
 
 function set7dayForecast(forecast_data) {
-  forecast_data.forEach((day) => {});
+  let seven_day_forecast = document.getElementById("seven_day_forecast");
+  seven_day_forecast.innerHTML = "";
+  forecast_data.forEach((day) => {
+    let forecast_element = setDay(day);
+    seven_day_forecast.appendChild(forecast_element);
+  });
 }
 
 function setDay(days_data) {
+  const forecast_item = document.createElement("div");
+  forecast_item.className = "forecast_item";
+
   // day
-  let day_date = getDate(todays_data.date.toString());
+  let day_date = getDate(days_data.date.toString());
   let day = getDayOfWeek(day_date.getDay());
+
+  const forecast_day = document.createElement("div");
+  forecast_day.className = "forecast_day";
+  forecast_day.innerText = day;
+  forecast_item.appendChild(forecast_day);
+
   // icon
 
   // temp ranges
-  let temp_ranges = `${mintemp}\xB0C - ${maxtemp}\xB0C`;
+  let temp_ranges = getTempRangesString(
+    days_data.temp2m.min,
+    days_data.temp2m.max
+  );
+  const forecast_temp_ranges = document.createElement("div");
+  forecast_temp_ranges.className = "forecast_temp_ranges";
+  forecast_temp_ranges.innerText = temp_ranges;
+  forecast_item.appendChild(forecast_temp_ranges);
 
   //description
+  let weather_description = getWeatherDescription(days_data.weather);
+
+  const forecast_descr = document.createElement("div");
+  forecast_descr.className = "forecast_descr";
+  forecast_descr.innerText = weather_description;
+  forecast_item.appendChild(forecast_descr);
+
+  return forecast_item;
 }

@@ -83,7 +83,7 @@ body {
     }
   }
 
-  .seven_day_forecast {
+  #seven_day_forecast {
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
