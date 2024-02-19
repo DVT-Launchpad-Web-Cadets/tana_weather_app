@@ -78,7 +78,8 @@ body {
       font-size: 1rem;
     }
 
-    .weather_icon {
+    #weather_icon {
+      height: 6rem;
       grid-area: weather_icon;
     }
   }
@@ -102,9 +103,11 @@ body {
         grid-area: forecast_day;
         align-self: center;
         justify-self: end;
+        padding: 1rem;
         font-size: 1.2rem;
       }
       .forecast_icon {
+        height: 3rem;
         grid-area: forecast_icon;
       }
       .forecast_temp_ranges {

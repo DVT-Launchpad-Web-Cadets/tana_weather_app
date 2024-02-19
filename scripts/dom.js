@@ -52,6 +52,8 @@ function setTodayElement(todays_data, city) {
   weather.innerText = weatherdescription;
 
   // weather icon
+  let icon = document.getElementById("weather_icon");
+  icon.src = getIconSrc(todays_data.weather);
 }
 
 function getDate(datestring) {
@@ -127,7 +129,7 @@ function getWeatherDescription(weather) {
 }
 
 function getTempRangesString(mintemp, maxtemp) {
-  return `${mintemp}\xB0C - ${maxtemp}\xB0C`;
+  return `${mintemp}\xB0C ~ ${maxtemp}\xB0C`;
 }
 
 function set7dayForecast(forecast_data) {
@@ -153,6 +155,10 @@ function setDay(days_data) {
   forecast_item.appendChild(forecast_day);
 
   // icon
+  const forecast_icon = document.createElement("img");
+  forecast_icon.className = "forecast_icon";
+  forecast_icon.src = getIconSrc(days_data.weather);
+  forecast_item.appendChild(forecast_icon);
 
   // temp ranges
   let temp_ranges = getTempRangesString(
@@ -173,4 +179,55 @@ function setDay(days_data) {
   forecast_item.appendChild(forecast_descr);
 
   return forecast_item;
+}
+
+function getIconSrc(weather) {
+  if (!weather) return "";
+
+  switch (weather) {
+    case "clear":
+      return "icons/clear.png";
+      break;
+    case "cloudy":
+      return "icons/overcast.png";
+      break;
+    case "lightrain":
+      return "icons/raining.png";
+      break;
+    case "pcloudy":
+      return "icons/pcloudy.png";
+      break;
+    case "ts":
+      return "icons/storm.png";
+      break;
+    case "snow":
+      return "icons/snow.png";
+      break;
+    case "rain":
+      return "icons/raining.png";
+      break;
+    case "tsrain":
+      return "icons/storm.png";
+      break;
+    case "mcloudy":
+      return "icons/pcloudy.png";
+      break;
+    case "humid":
+      return "icons/fog.png";
+      break;
+    case "oshower":
+      return "icons/raining.png";
+      break;
+    case "ishower":
+      return "icons/raining.png";
+      break;
+    case "lightsnow":
+      return "icons/snow.png";
+      break;
+    case "rainsnow":
+      return "icons/snow.png";
+      break;
+    default:
+      return "icons/wind.png";
+  }
 }
