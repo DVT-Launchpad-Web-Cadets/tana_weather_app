@@ -21,7 +21,7 @@ body {
 
   #todaysdate {
     height: 1.2rem;
-    background-color: aqua;
+    /* background-color: aqua; */
     font: 0.85rem sans-serif;
   }
 }
@@ -61,7 +61,7 @@ body {
       "location_name weather_icon"
       "temp_ranges weather_icon"
       "weather_descr weather_icon";
-    background-color: aqua;
+    background-color: lightskyblue;
 
     #location_name {
       grid-area: location_name;
@@ -128,8 +128,8 @@ body {
     height: 2rem;
     top: 1rem;
     right: 1rem;
-    background-color: #0c9;
-    color: #fff;
+    background-color: rgb(182, 92, 182);
+    color: white;
     border-radius: 50px;
     text-align: center;
     font-size: 25px;
