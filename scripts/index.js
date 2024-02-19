@@ -10,16 +10,6 @@ window.addEventListener("load", (event) => {
   getCoords("Johannesburg");
 });
 
-// The user should be able to click on a major city
-// to get the weather for that location
-const majorCities = document.querySelectorAll(".major_cities_scroll a");
-majorCities.forEach((city) => {
-  city.addEventListener("click", function (e) {
-    console.log(city.innerText);
-    getCoords(city.innerText);
-  });
-});
-
 // map listeners
 const map_div = document.getElementById("map_container");
 const seven_day = document.getElementById("seven_day_forecast");
@@ -32,6 +22,29 @@ open_map.addEventListener("click", function (e) {
     map_div.style.display = "block";
     seven_day.style.display = "none";
   }
+});
+
+map.on("click", onMapClick);
+
+function onMapClick(e) {
+  let longitude = Math.round(e.latlng.lat * 1000) / 1000;
+  let latitude = Math.round(e.latlng.lng * 1000) / 1000;
+  // console.log(longitude);
+  // console.log(latitude);
+  // console.log(location);
+  callTheWeatherAPI(longitude, latitude, "Selected Location");
+  map_div.style.display = "none";
+  seven_day.style.display = "flex";
+}
+
+// The user should be able to click on a major city
+// to get the weather for that location
+const majorCities = document.querySelectorAll(".major_cities_scroll a");
+majorCities.forEach((city) => {
+  city.addEventListener("click", function (e) {
+    console.log(city.innerText);
+    getCoords(city.innerText);
+  });
 });
 
 async function getCoords(city) {
