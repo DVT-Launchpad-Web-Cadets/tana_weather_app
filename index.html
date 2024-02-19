@@ -1,39 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>7-day Weather Forecast</title>
 
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/solid.css">
-    <script src="https://kit.fontawesome.com/0d9546a1f6.js" crossorigin="anonymous"></script>
-
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/solid.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/0d9546a1f6.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+  </head>
+  <body>
     <div class="container">
-        <div class="heading">
-            <span>Weather</span> 
-            <div id="todaysdate"></div>
+      <div class="heading">
+        <span>Weather</span>
+        <div id="todaysdate"></div>
+      </div>
+      <div class="major_cities_scroll">
+        <a href="#">Johannesburg</a>
+        <a href="#">Cape Town</a>
+        <a href="#">London</a>
+        <a href="#">Los Angeles</a>
+        <a href="#">New York</a>
+        <a href="#">Toronto</a>
+        <a href="#">Melbourne</a>
+      </div>
+      <div class="weather_and_map">
+        <div class="forecast_today">
+          <div class="weather_icon"></div>
+          <div id="location_name"></div>
+          <div id="temp_ranges"></div>
+          <div id="weather_descr"></div>
         </div>
-        <div class="major_cities_scroll">
-            <a href="#">Johannesburg</a> 
-            <a href="#">Cape Town</a>
-            <a href="#">London</a>
-            <a href="#">Los Angeles</a>
-            <a href="#">New York</a>
-            <a href="#">Toronto</a>
-            <a href="#">Melbourne</a>
-        </div>
-        <div class="weather_and_map">
-            <div class="forecast_today">
-                <div class="weather_icon"></div>
-                <div id="location_name"></div>
-                <div id="temp_ranges"></div>
-                <div id="weather_descr"></div>
-            </div>
-            <div id="seven_day_forecast">
-                <!-- <div class="forecast_item">
+        <div id="seven_day_forecast">
+          <!-- <div class="forecast_item">
                     <div class="forecast_day">Saturday</div>
                     <div class="forecast_icon"></div>
                     <div class="forecast_temp_ranges">20&deg;C - 27&deg;C</div>
@@ -69,16 +85,16 @@
                     <div class="forecast_temp_ranges">20&deg;C - 27&deg;C</div>
                     <div class="forecast_descr">Cloudy</div>
                 </div> -->
-            </div>
-            <a href="#" id="map_button_float">
-                <i class="fa-solid fa-map-location-dot"></i>
-            </a>
-            <div id="map">
-                <a id="close_map_button">X</a>
-            </div>
         </div>
+        <a href="#" id="map_button_float">
+          <i class="fa-solid fa-map-location-dot"></i>
+        </a>
+        <div id="map_container">
+          <div id="map"></div>
+        </div>
+      </div>
     </div>
 
     <script src="scripts/index.js" defer type="module"></script>
-</body>
+  </body>
 </html>
