@@ -9,6 +9,17 @@ export function setDOM(results: IForecastRoot, city: string): void {
 }
 
 function setTodayElement(todaysWeatherData: ISeries, city: string): void {
+  if (
+    !(
+      todaysWeatherData?.date &&
+      todaysWeatherData?.temp2m?.min &&
+      todaysWeatherData?.temp2m?.max &&
+      todaysWeatherData?.weather
+    )
+  ) {
+    throw new Error("Today's weather data is not found.");
+  }
+
   // todays date
   const todaysDate: Date = getDate(todaysWeatherData.date.toString());
   const monthNames: string[] = [
@@ -135,6 +146,17 @@ function set7dayForecast(forecastData: ISeries[]): void {
 }
 
 function setDay(daysData: ISeries): HTMLDivElement {
+  if (
+    !(
+      daysData?.date &&
+      daysData?.temp2m?.min &&
+      daysData?.temp2m?.max &&
+      daysData?.weather
+    )
+  ) {
+    throw new Error("Today's weather data is not found.");
+  }
+
   const forecastItem = document.createElement("div");
   forecastItem.className = "forecast-item";
 
