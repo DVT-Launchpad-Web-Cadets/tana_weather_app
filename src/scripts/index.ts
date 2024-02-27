@@ -1,7 +1,7 @@
 import { Map } from "leaflet";
 import { getWeatherData } from "./api.ts";
 import { setDOM } from "./dom.ts";
-import { initilizeMap, updateMap } from "./map.ts";
+import { initilizeMap, updateMap, map_listeners } from "./map.ts";
 
 // GLOBAL VARIABLES
 const map: Map = initilizeMap();
@@ -19,29 +19,9 @@ const open_map: HTMLElement | null =
   document.getElementById("map_button_float");
 
 if (map_div && seven_day && open_map) {
-  open_map.addEventListener("click", function (e) {
-    if (map_div.style.display === "block") {
-      map_div.style.display = "none";
-      seven_day.style.display = "flex";
-    } else {
-      map_div.style.display = "block";
-      seven_day.style.display = "none";
-    }
-  });
-
-  map.on("click", onMapClick);
-
-  function onMapClick(e) {
-    let longitude = Math.round(e.latlng.lat * 1000) / 1000;
-    let latitude = Math.round(e.latlng.lng * 1000) / 1000;
-    // console.log(longitude);
-    // console.log(latitude);
-    // console.log(location);
-    callTheWeatherAPI(longitude, latitude, "Selected Location");
-    map_div.style.display = "none";
-    seven_day.style.display = "flex";
-  }
+  map_listeners(map, map_div, seven_day, open_map);
 }
+
 // The user should be able to click on a major city
 // to get the weather for that location
 const majorCities = document.querySelectorAll(".major_cities_scroll a");
@@ -71,7 +51,7 @@ async function getCoords(city) {
     .catch((error) => console.error("Unable to fetch data:", error));
 }
 
-function callTheWeatherAPI(longitude, latitude, city) {
+export function callTheWeatherAPI(longitude, latitude, city) {
   getWeatherData(longitude, latitude)
     .then((res) => {
       // mapping of results

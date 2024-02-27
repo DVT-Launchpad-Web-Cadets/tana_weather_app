@@ -1,4 +1,5 @@
 import { map as leafLetMap, latLng, marker, tileLayer, Map } from "leaflet";
+import { callTheWeatherAPI } from "./index.ts";
 
 export function updateMap(
   map,
@@ -25,4 +26,34 @@ export function initilizeMap(): Map {
   marker(latLng(-26.204, 28.047)).addTo(myMap).openPopup();
 
   return myMap;
+}
+
+export function map_listeners(
+  map: Map,
+  map_div: HTMLElement,
+  seven_day: HTMLElement,
+  open_map: HTMLElement
+): void {
+  open_map.addEventListener("click", function (e) {
+    if (map_div.style.display === "block") {
+      map_div.style.display = "none";
+      seven_day.style.display = "flex";
+    } else {
+      map_div.style.display = "block";
+      seven_day.style.display = "none";
+    }
+  });
+
+  map.on("click", onMapClick);
+
+  function onMapClick(e) {
+    let longitude = Math.round(e.latlng.lat * 1000) / 1000;
+    let latitude = Math.round(e.latlng.lng * 1000) / 1000;
+    // console.log(longitude);
+    // console.log(latitude);
+    // console.log(location);
+    callTheWeatherAPI(longitude, latitude, "Selected Location");
+    map_div.style.display = "none";
+    seven_day.style.display = "flex";
+  }
 }
