@@ -24,15 +24,19 @@ if (map_div && seven_day && open_map) {
 
 // The user should be able to click on a major city
 // to get the weather for that location
-const majorCities = document.querySelectorAll(".major_cities_scroll a");
-majorCities.forEach((city) => {
+const getMajorCities: NodeListOf<HTMLElement> =
+  document.querySelectorAll<HTMLElement>(".major_cities_scroll a");
+
+const majorCities: HTMLElement[] = Array.from(getMajorCities);
+
+for (let city of majorCities) {
   city.addEventListener("click", function (e) {
     console.log(city.innerText);
     getCoords(city.innerText);
   });
-});
+}
 
-async function getCoords(city) {
+async function getCoords(city: string): Promise<void> {
   await fetch("../coordinates.json")
     .then((res) => {
       if (!res.ok) {
@@ -44,14 +48,18 @@ async function getCoords(city) {
     })
     .then((data) => {
       // returns the coordinates of the city
-      let longitude = data.major_cities[0][city][0].long;
-      let latitude = data.major_cities[0][city][0].lat;
+      const longitude: number = data.major_cities[0][city][0].long;
+      const latitude: number = data.major_cities[0][city][0].lat;
       callTheWeatherAPI(longitude, latitude, city);
     })
     .catch((error) => console.error("Unable to fetch data:", error));
 }
 
-export function callTheWeatherAPI(longitude, latitude, city) {
+export function callTheWeatherAPI(
+  longitude: number,
+  latitude: number,
+  city: string
+): void {
   getWeatherData(longitude, latitude)
     .then((res) => {
       // mapping of results

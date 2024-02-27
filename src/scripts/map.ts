@@ -1,4 +1,4 @@
-import { map as leafLetMap, latLng, marker, tileLayer, Map } from "leaflet";
+import { map, latLng, marker, tileLayer, Map } from "leaflet";
 import { callTheWeatherAPI } from "./index.ts";
 
 export function updateMap(
@@ -17,7 +17,7 @@ export function updateMap(
 
 export function initilizeMap(): Map {
   // initialise map and set initial view to johannesburg
-  const myMap: Map = leafLetMap("map").setView([-26.204, 28.047], 13);
+  const myMap: Map = map("map").setView([-26.204, 28.047], 13);
 
   tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
