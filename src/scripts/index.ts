@@ -1,5 +1,5 @@
 import { Map } from "leaflet";
-import { getWeatherData } from "./api.ts";
+import { getWeatherData, getCityCoords } from "./api.ts";
 import { setDOM } from "./dom.ts";
 import { initilizeMap, updateMap, mapListeners } from "./map.ts";
 import { ICityData } from "../models/cityData";
@@ -9,18 +9,20 @@ const map: Map = initilizeMap();
 
 // EVENT LISTENERSSS
 window.addEventListener("load", (event) => {
-  getCoords("Johannesburg");
+  getCityCoords("Johannesburg");
 });
 
 // map listeners
-const mapDiv: HTMLElement | null = document.getElementById("map-container");
-const sevenDayDiv: HTMLElement | null =
-  document.getElementById("seven-day-forecast");
-const openMap: HTMLElement | null = document.getElementById("map-button-float");
+const mapDiv = document.getElementById("map-container") as HTMLElement;
+const sevenDayDiv = document.getElementById(
+  "seven-day-forecast"
+) as HTMLElement;
+const openMap = document.getElementById("map-button-float") as HTMLElement;
 
-if (mapDiv && sevenDayDiv && openMap) {
-  mapListeners(map, mapDiv, sevenDayDiv, openMap);
+if (!(mapDiv || sevenDayDiv || openMap)) {
+  throw new Error("Cannot find the map, or the 7 day forecast div");
 }
+mapListeners(map, mapDiv, sevenDayDiv, openMap);
 
 // The user should be able to click on a major city
 // to get the weather for that location
@@ -29,42 +31,10 @@ const getMajorCities: NodeListOf<HTMLElement> =
 
 const majorCities: HTMLElement[] = Array.from(getMajorCities);
 
-for (let city of majorCities) {
+for (const city of majorCities) {
   city.addEventListener("click", function (e) {
-    getCoords(city.innerText);
+    getCityCoords(city.innerText);
   });
-}
-
-async function getCoords(city: string): Promise<void> {
-  await fetch("../coordinates.json")
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(
-          `Error! Cannot get the coordinates. Status: ${res.status}`
-        );
-      }
-      return res.json();
-    })
-    .then((data) => {
-      // returns the coordinates of the city
-      if (
-        !(
-          data?.majorCities[0][city][0]?.long &&
-          data?.majorCities[0][city][0]?.lat
-        )
-      ) {
-        throw new Error("Cannot get the coordinates.");
-      }
-      const longitude: number = data.majorCities[0][city][0].long;
-      const latitude: number = data.majorCities[0][city][0].lat;
-      const cityData: ICityData = {
-        longitude: longitude,
-        latitude: latitude,
-        city: city,
-      };
-      callTheWeatherAPI(cityData);
-    })
-    .catch((error) => console.error("Unable to fetch data:", error));
 }
 
 export function callTheWeatherAPI(cityData: ICityData): void {

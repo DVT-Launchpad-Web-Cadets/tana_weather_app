@@ -1,12 +1,13 @@
 import { map, latLng, marker, tileLayer, Map } from "leaflet";
 import { callTheWeatherAPI } from "./index.ts";
 import { ICityData } from "../models/cityData";
+import { mapDisplayToggle } from "./dom.ts";
 
 export function updateMap(map, cityData: ICityData): void {
   map.panTo(latLng(cityData.latitude, cityData.longitude));
   marker(latLng(cityData.latitude, cityData.longitude)).addTo(map).openPopup();
 
-  // use setView instead of mapto
+  // use setView (or flyTo - has cool animations) instead of mapto
 }
 
 export function initilizeMap(): Map {
@@ -28,15 +29,9 @@ export function mapListeners(
   sevenDayDiv: HTMLElement,
   openMap: HTMLElement
 ): void {
-  openMap.addEventListener("click", function (e) {
-    if (mapDiv.style.display === "block") {
-      mapDiv.style.display = "none";
-      sevenDayDiv.style.display = "flex";
-    } else {
-      mapDiv.style.display = "block";
-      sevenDayDiv.style.display = "none";
-    }
-  });
+  openMap.addEventListener("click", () =>
+    mapDisplayToggle(mapDiv, sevenDayDiv)
+  );
 
   map.on("click", onMapClick);
 

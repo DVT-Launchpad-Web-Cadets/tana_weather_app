@@ -31,21 +31,20 @@ function setTodayElement(todaysWeatherData: ISeries, city: string): void {
     monthNames[todaysDate.getMonth()]
   } ${todaysDate.getFullYear()}`;
 
-  const todayElement: HTMLElement | null =
-    document.getElementById("todays-date");
+  const todayElement = document.getElementById("todays-date");
   // location name
-  const locationName: HTMLElement | null =
-    document.getElementById("location-name");
+  const locationName = document.getElementById("location-name");
   // tempRanges
-  const tempRanges: HTMLElement | null = document.getElementById("temp-ranges");
+  const tempRanges = document.getElementById("temp-ranges");
   // weather description
-  const weather: HTMLElement | null = document.getElementById("weather-descr");
+  const weather = document.getElementById("weather-descr");
   // weather icon
-  const icon: HTMLElement | null = document.getElementById("weather-icon");
+  const icon = document.getElementById("weather-icon");
 
   if (!(todayElement && locationName && tempRanges && weather && icon)) {
     throw new Error("Todays weather DOM elements are not available.");
   }
+
   todayElement.innerText = dateString;
   locationName.innerText = city;
   tempRanges.innerText = getTempRangesString(
@@ -122,56 +121,67 @@ function getTempRangesString(minTemp: number, maxTemp: number): string {
 }
 
 function set7dayForecast(forecastData: ISeries[]): void {
-  let sevenDayForecast: HTMLElement | null =
+  const sevenDayForecast: HTMLElement | null =
     document.getElementById("seven-day-forecast");
-  if (sevenDayForecast) {
-    sevenDayForecast.innerHTML = "";
+  if (!sevenDayForecast) {
+    throw new Error("Could not find where to place the 7-day forecast.");
+  }
 
-    for (let day of forecastData) {
-      const forecastElement: HTMLDivElement = setDay(day);
-      sevenDayForecast.appendChild(forecastElement);
-    }
+  sevenDayForecast.innerHTML = "";
+  for (const day of forecastData) {
+    const forecastElement: HTMLDivElement = setDay(day);
+    sevenDayForecast.appendChild(forecastElement);
   }
 }
 
 function setDay(daysData: ISeries): HTMLDivElement {
-  let forecastItem: HTMLDivElement = document.createElement("div");
+  const forecastItem = document.createElement("div");
   forecastItem.className = "forecast-item";
 
   // day
-  const dayDate: Date = getDate(daysData.date.toString());
-  const day: string = getDayOfWeek(dayDate.getDay());
+  const dayDate = getDate(daysData.date.toString());
+  const day = getDayOfWeek(dayDate.getDay());
 
-  const forecastDay: HTMLDivElement = document.createElement("div");
+  const forecastDay = document.createElement("div");
   forecastDay.className = "forecast-day";
   forecastDay.innerText = day;
   forecastItem.appendChild(forecastDay);
 
   // icon
-  const forecastIcon: HTMLImageElement = document.createElement("img");
+  const forecastIcon = document.createElement("img");
   forecastIcon.className = "forecast-icon";
   forecastIcon.src = getIconSrc(daysData.weather);
   forecastItem.appendChild(forecastIcon);
 
   // temp ranges
-  const tempRanges: string = getTempRangesString(
+  const tempRanges = getTempRangesString(
     daysData.temp2m.min,
     daysData.temp2m.max
   );
-  const forecastTempRanges: HTMLDivElement = document.createElement("div");
+  const forecastTempRanges = document.createElement("div");
   forecastTempRanges.className = "forecast-temp-ranges";
   forecastTempRanges.innerText = tempRanges;
   forecastItem.appendChild(forecastTempRanges);
 
   //description
-  const weatherDescription: string = getWeatherDescription(daysData.weather);
+  const weatherDescription = getWeatherDescription(daysData.weather);
 
-  const forecastDescription: HTMLDivElement = document.createElement("div");
+  const forecastDescription = document.createElement("div");
   forecastDescription.className = "forecast-descr";
   forecastDescription.innerText = weatherDescription;
   forecastItem.appendChild(forecastDescription);
 
   return forecastItem;
+}
+
+export function mapDisplayToggle(mapDiv, sevenDayDiv) {
+  if (mapDiv.style.display === "block") {
+    mapDiv.style.display = "none";
+    sevenDayDiv.style.display = "flex";
+  } else {
+    mapDiv.style.display = "block";
+    sevenDayDiv.style.display = "none";
+  }
 }
 
 function getIconSrc(weather: string): string {
