@@ -1,6 +1,6 @@
-import { getWeatherData } from "./api.js";
-import { setDOM } from "./dom.js";
-import { initilizeMap, updateMap } from "./map.js";
+import { getWeatherData } from "./api.ts";
+import { setDOM } from "./dom.ts";
+import { initilizeMap, updateMap } from "./map.ts";
 
 // GLOBAL VARIABLES
 const map = initilizeMap();
