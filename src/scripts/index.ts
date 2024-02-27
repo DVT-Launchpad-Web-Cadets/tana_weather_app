@@ -1,7 +1,7 @@
 import { Map } from "leaflet";
 import { getWeatherData } from "./api.ts";
 import { setDOM } from "./dom.ts";
-import { initilizeMap, updateMap, map_listeners } from "./map.ts";
+import { initilizeMap, updateMap, mapListeners } from "./map.ts";
 
 // GLOBAL VARIABLES
 const map: Map = initilizeMap();
@@ -12,20 +12,19 @@ window.addEventListener("load", (event) => {
 });
 
 // map listeners
-const map_div: HTMLElement | null = document.getElementById("map_container");
-const seven_day: HTMLElement | null =
-  document.getElementById("seven_day_forecast");
-const open_map: HTMLElement | null =
-  document.getElementById("map_button_float");
+const mapDiv: HTMLElement | null = document.getElementById("map-container");
+const sevenDayDiv: HTMLElement | null =
+  document.getElementById("seven-day-forecast");
+const openMap: HTMLElement | null = document.getElementById("map-button-float");
 
-if (map_div && seven_day && open_map) {
-  map_listeners(map, map_div, seven_day, open_map);
+if (mapDiv && sevenDayDiv && openMap) {
+  mapListeners(map, mapDiv, sevenDayDiv, openMap);
 }
 
 // The user should be able to click on a major city
 // to get the weather for that location
 const getMajorCities: NodeListOf<HTMLElement> =
-  document.querySelectorAll<HTMLElement>(".major_cities_scroll a");
+  document.querySelectorAll<HTMLElement>(".major-cities-scroll a");
 
 const majorCities: HTMLElement[] = Array.from(getMajorCities);
 
@@ -47,8 +46,16 @@ async function getCoords(city: string): Promise<void> {
     })
     .then((data) => {
       // returns the coordinates of the city
-      const longitude: number = data.major_cities[0][city][0].long;
-      const latitude: number = data.major_cities[0][city][0].lat;
+      if (
+        !(
+          data?.majorCities[0][city][0]?.long &&
+          data?.majorCities[0][city][0]?.lat
+        )
+      ) {
+        throw new Error("Cannot get the coordinates.");
+      }
+      const longitude: number = data.majorCities[0][city][0].long;
+      const latitude: number = data.majorCities[0][city][0].lat;
       callTheWeatherAPI(longitude, latitude, city);
     })
     .catch((error) => console.error("Unable to fetch data:", error));
@@ -65,8 +72,5 @@ export function callTheWeatherAPI(
       setDOM(res, city);
       updateMap(map, longitude, latitude, city);
     })
-    .catch(console.error)
-    .finally(() => {
-      // cleanup
-    });
+    .catch(console.error);
 }

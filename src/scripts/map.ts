@@ -26,19 +26,19 @@ export function initilizeMap(): Map {
   return myMap;
 }
 
-export function map_listeners(
+export function mapListeners(
   map: Map,
-  map_div: HTMLElement,
-  seven_day: HTMLElement,
-  open_map: HTMLElement
+  mapDiv: HTMLElement,
+  sevenDayDiv: HTMLElement,
+  openMap: HTMLElement
 ): void {
-  open_map.addEventListener("click", function (e) {
-    if (map_div.style.display === "block") {
-      map_div.style.display = "none";
-      seven_day.style.display = "flex";
+  openMap.addEventListener("click", function (e) {
+    if (mapDiv.style.display === "block") {
+      mapDiv.style.display = "none";
+      sevenDayDiv.style.display = "flex";
     } else {
-      map_div.style.display = "block";
-      seven_day.style.display = "none";
+      mapDiv.style.display = "block";
+      sevenDayDiv.style.display = "none";
     }
   });
 
@@ -48,7 +48,7 @@ export function map_listeners(
     let longitude = Math.round(e.latlng.lat * 1000) / 1000;
     let latitude = Math.round(e.latlng.lng * 1000) / 1000;
     callTheWeatherAPI(longitude, latitude, "Selected Location");
-    map_div.style.display = "none";
-    seven_day.style.display = "flex";
+    mapDiv.style.display = "none";
+    sevenDayDiv.style.display = "flex";
   }
 }

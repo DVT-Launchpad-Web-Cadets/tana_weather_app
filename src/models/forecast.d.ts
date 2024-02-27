@@ -1,17 +1,17 @@
-export interface ForecastRoot {
+export interface IForecastRoot {
   product: string;
   init: string;
-  dataseries: Series[];
+  dataseries: ISeries[];
 }
 
-export interface Series {
+export interface ISeries {
   date: number;
   weather: string;
-  temp2m: Temp2m;
+  temp2m: ITemp2m;
   wind10m_max: number;
 }
 
-export interface Temp2m {
+export interface ITemp2m {
   max: number;
   min: number;
 }

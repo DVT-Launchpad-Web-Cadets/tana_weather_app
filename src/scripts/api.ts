@@ -1,9 +1,9 @@
-import { ForecastRoot } from "../models/forecast";
+import { IForecastRoot } from "../models/forecast";
 
 export function getWeatherData(
   longitude: number,
   latitude: number
-): Promise<ForecastRoot> {
+): Promise<IForecastRoot> {
   return fetch(
     `http://www.7timer.info/bin/api.pl?lon=${longitude}&lat=${latitude}&product=civillight&output=json`
   ).then((response) => response.json());

@@ -1,13 +1,16 @@
-import { ForecastRoot, Series } from "../models/forecast";
+import { IForecastRoot, ISeries } from "../models/forecast";
 
-export function setDOM(results: ForecastRoot, city: string): void {
+export function setDOM(results: IForecastRoot, city: string): void {
+  if (!(results?.dataseries && results?.dataseries[0])) {
+    throw new Error("No weather results found.");
+  }
   setTodayElement(results.dataseries[0], city);
   set7dayForecast(results.dataseries);
 }
 
-function setTodayElement(todays_data: Series, city: string): void {
+function setTodayElement(todaysWeatherData: ISeries, city: string): void {
   // todays date
-  const todays_date: Date = getDate(todays_data.date.toString());
+  const todaysDate: Date = getDate(todaysWeatherData.date.toString());
   const monthNames: string[] = [
     "January",
     "February",
@@ -22,43 +25,44 @@ function setTodayElement(todays_data: Series, city: string): void {
     "November",
     "December",
   ];
-  const datestring: string = `${getDayOfWeek(
-    todays_date.getDay()
-  )}, ${todays_date.getDate()} ${
-    monthNames[todays_date.getMonth()]
-  } ${todays_date.getFullYear()}`;
+  const dateString: string = `${getDayOfWeek(
+    todaysDate.getDay()
+  )}, ${todaysDate.getDate()} ${
+    monthNames[todaysDate.getMonth()]
+  } ${todaysDate.getFullYear()}`;
 
   const todayElement: HTMLElement | null =
-    document.getElementById("todaysdate");
+    document.getElementById("todays-date");
   // location name
-  const location: HTMLElement | null = document.getElementById("location_name");
-  // temp_ranges
-  const temp_ranges: HTMLElement | null =
-    document.getElementById("temp_ranges");
+  const locationName: HTMLElement | null =
+    document.getElementById("location-name");
+  // tempRanges
+  const tempRanges: HTMLElement | null = document.getElementById("temp-ranges");
   // weather description
-  const weather: HTMLElement | null = document.getElementById("weather_descr");
+  const weather: HTMLElement | null = document.getElementById("weather-descr");
   // weather icon
-  const icon: HTMLElement | null = document.getElementById("weather_icon");
+  const icon: HTMLElement | null = document.getElementById("weather-icon");
 
-  if (todayElement && location && temp_ranges && weather && icon) {
-    todayElement.innerText = datestring;
-    location.innerText = city;
-    temp_ranges.innerText = getTempRangesString(
-      todays_data.temp2m.min,
-      todays_data.temp2m.max
-    );
-    const weatherdescription: string = getWeatherDescription(
-      todays_data.weather
-    );
-    weather.innerText = weatherdescription;
-    icon.setAttribute("src", getIconSrc(todays_data.weather));
+  if (!(todayElement && locationName && tempRanges && weather && icon)) {
+    throw new Error("Todays weather DOM elements are not available.");
   }
+  todayElement.innerText = dateString;
+  locationName.innerText = city;
+  tempRanges.innerText = getTempRangesString(
+    todaysWeatherData.temp2m.min,
+    todaysWeatherData.temp2m.max
+  );
+  const weatherDescription: string = getWeatherDescription(
+    todaysWeatherData.weather
+  );
+  weather.innerText = weatherDescription;
+  icon.setAttribute("src", getIconSrc(todaysWeatherData.weather));
 }
 
-function getDate(datestring: string): Date {
-  const year = Number(datestring.substring(0, 4));
-  const month = Number(datestring.substring(4, 6)) - 1;
-  const day = Number(datestring.substring(6, 8));
+function getDate(dateString: string): Date {
+  const year = Number(dateString.substring(0, 4));
+  const month = Number(dateString.substring(4, 6)) - 1;
+  const day = Number(dateString.substring(6, 8));
   return new Date(year, month, day);
 }
 
@@ -113,61 +117,61 @@ function getWeatherDescription(weather: string): string {
   }
 }
 
-function getTempRangesString(mintemp: number, maxtemp: number): string {
-  return `${mintemp}\xB0C ~ ${maxtemp}\xB0C`;
+function getTempRangesString(minTemp: number, maxTemp: number): string {
+  return `${minTemp}\xB0C ~ ${maxTemp}\xB0C`;
 }
 
-function set7dayForecast(forecast_data: Series[]): void {
-  let seven_day_forecast: HTMLElement | null =
-    document.getElementById("seven_day_forecast");
-  if (seven_day_forecast) {
-    seven_day_forecast.innerHTML = "";
+function set7dayForecast(forecastData: ISeries[]): void {
+  let sevenDayForecast: HTMLElement | null =
+    document.getElementById("seven-day-forecast");
+  if (sevenDayForecast) {
+    sevenDayForecast.innerHTML = "";
 
-    for (let day of forecast_data) {
-      const forecast_element: HTMLDivElement = setDay(day);
-      seven_day_forecast.appendChild(forecast_element);
+    for (let day of forecastData) {
+      const forecastElement: HTMLDivElement = setDay(day);
+      sevenDayForecast.appendChild(forecastElement);
     }
   }
 }
 
-function setDay(days_data: Series): HTMLDivElement {
-  let forecast_item: HTMLDivElement = document.createElement("div");
-  forecast_item.className = "forecast_item";
+function setDay(daysData: ISeries): HTMLDivElement {
+  let forecastItem: HTMLDivElement = document.createElement("div");
+  forecastItem.className = "forecast-item";
 
   // day
-  const day_date: Date = getDate(days_data.date.toString());
-  const day: string = getDayOfWeek(day_date.getDay());
+  const dayDate: Date = getDate(daysData.date.toString());
+  const day: string = getDayOfWeek(dayDate.getDay());
 
-  const forecast_day: HTMLDivElement = document.createElement("div");
-  forecast_day.className = "forecast_day";
-  forecast_day.innerText = day;
-  forecast_item.appendChild(forecast_day);
+  const forecastDay: HTMLDivElement = document.createElement("div");
+  forecastDay.className = "forecast-day";
+  forecastDay.innerText = day;
+  forecastItem.appendChild(forecastDay);
 
   // icon
-  const forecast_icon: HTMLImageElement = document.createElement("img");
-  forecast_icon.className = "forecast_icon";
-  forecast_icon.src = getIconSrc(days_data.weather);
-  forecast_item.appendChild(forecast_icon);
+  const forecastIcon: HTMLImageElement = document.createElement("img");
+  forecastIcon.className = "forecast-icon";
+  forecastIcon.src = getIconSrc(daysData.weather);
+  forecastItem.appendChild(forecastIcon);
 
   // temp ranges
-  const temp_ranges: string = getTempRangesString(
-    days_data.temp2m.min,
-    days_data.temp2m.max
+  const tempRanges: string = getTempRangesString(
+    daysData.temp2m.min,
+    daysData.temp2m.max
   );
-  const forecast_temp_ranges: HTMLDivElement = document.createElement("div");
-  forecast_temp_ranges.className = "forecast_temp_ranges";
-  forecast_temp_ranges.innerText = temp_ranges;
-  forecast_item.appendChild(forecast_temp_ranges);
+  const forecastTempRanges: HTMLDivElement = document.createElement("div");
+  forecastTempRanges.className = "forecast-temp-ranges";
+  forecastTempRanges.innerText = tempRanges;
+  forecastItem.appendChild(forecastTempRanges);
 
   //description
-  const weather_description: string = getWeatherDescription(days_data.weather);
+  const weatherDescription: string = getWeatherDescription(daysData.weather);
 
-  const forecast_descr: HTMLDivElement = document.createElement("div");
-  forecast_descr.className = "forecast_descr";
-  forecast_descr.innerText = weather_description;
-  forecast_item.appendChild(forecast_descr);
+  const forecastDescription: HTMLDivElement = document.createElement("div");
+  forecastDescription.className = "forecast-descr";
+  forecastDescription.innerText = weatherDescription;
+  forecastItem.appendChild(forecastDescription);
 
-  return forecast_item;
+  return forecastItem;
 }
 
 function getIconSrc(weather: string): string {
