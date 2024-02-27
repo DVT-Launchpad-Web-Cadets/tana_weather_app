@@ -31,7 +31,6 @@ const majorCities: HTMLElement[] = Array.from(getMajorCities);
 
 for (let city of majorCities) {
   city.addEventListener("click", function (e) {
-    console.log(city.innerText);
     getCoords(city.innerText);
   });
 }
@@ -63,8 +62,6 @@ export function callTheWeatherAPI(
   getWeatherData(longitude, latitude)
     .then((res) => {
       // mapping of results
-      console.log(res);
-      console.log("---");
       setDOM(res, city);
       updateMap(map, longitude, latitude, city);
     })

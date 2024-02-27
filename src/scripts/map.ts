@@ -7,8 +7,6 @@ export function updateMap(
   latitude: number,
   city: string
 ): void {
-  console.log("changing map", city);
-
   map.panTo(latLng(latitude, longitude));
   marker(latLng(latitude, longitude)).addTo(map).openPopup();
 
@@ -49,9 +47,6 @@ export function map_listeners(
   function onMapClick(e) {
     let longitude = Math.round(e.latlng.lat * 1000) / 1000;
     let latitude = Math.round(e.latlng.lng * 1000) / 1000;
-    // console.log(longitude);
-    // console.log(latitude);
-    // console.log(location);
     callTheWeatherAPI(longitude, latitude, "Selected Location");
     map_div.style.display = "none";
     seven_day.style.display = "flex";

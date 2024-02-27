@@ -1,14 +1,7 @@
 import { ForecastRoot, Series } from "../models/forecast";
 
 export function setDOM(results: ForecastRoot, city: string): void {
-  // console.log(results.dataseries[0].date);
-  // console.log(results.dataseries[0].temp2m.max);
-  // console.log(results.dataseries[0].temp2m.min);
-  // console.log(results.dataseries[0].weather);
-
   setTodayElement(results.dataseries[0], city);
-
-  console.log(results.dataseries);
   set7dayForecast(results.dataseries);
 }
 
