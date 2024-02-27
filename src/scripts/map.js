@@ -3,6 +3,8 @@ export function updateMap(map, longitude, latitude, city) {
 
   map.panTo(new L.LatLng(latitude, longitude));
   L.marker(new L.LatLng(latitude, longitude)).addTo(map).openPopup();
+
+  // use setView instead of mapto
 }
 
 export function initilizeMap() {
