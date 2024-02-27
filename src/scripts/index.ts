@@ -2,6 +2,7 @@ import { Map } from "leaflet";
 import { getWeatherData } from "./api.ts";
 import { setDOM } from "./dom.ts";
 import { initilizeMap, updateMap, mapListeners } from "./map.ts";
+import { ICityData } from "../models/cityData";
 
 // GLOBAL VARIABLES
 const map: Map = initilizeMap();
@@ -56,21 +57,22 @@ async function getCoords(city: string): Promise<void> {
       }
       const longitude: number = data.majorCities[0][city][0].long;
       const latitude: number = data.majorCities[0][city][0].lat;
-      callTheWeatherAPI(longitude, latitude, city);
+      const cityData: ICityData = {
+        longitude: longitude,
+        latitude: latitude,
+        city: city,
+      };
+      callTheWeatherAPI(cityData);
     })
     .catch((error) => console.error("Unable to fetch data:", error));
 }
 
-export function callTheWeatherAPI(
-  longitude: number,
-  latitude: number,
-  city: string
-): void {
-  getWeatherData(longitude, latitude)
+export function callTheWeatherAPI(cityData: ICityData): void {
+  getWeatherData(cityData.longitude, cityData.latitude)
     .then((res) => {
       // mapping of results
-      setDOM(res, city);
-      updateMap(map, longitude, latitude, city);
+      setDOM(res, cityData.city);
+      updateMap(map, cityData);
     })
     .catch(console.error);
 }

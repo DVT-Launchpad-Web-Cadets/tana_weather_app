@@ -1,14 +1,10 @@
 import { map, latLng, marker, tileLayer, Map } from "leaflet";
 import { callTheWeatherAPI } from "./index.ts";
+import { ICityData } from "../models/cityData";
 
-export function updateMap(
-  map,
-  longitude: number,
-  latitude: number,
-  city: string
-): void {
-  map.panTo(latLng(latitude, longitude));
-  marker(latLng(latitude, longitude)).addTo(map).openPopup();
+export function updateMap(map, cityData: ICityData): void {
+  map.panTo(latLng(cityData.latitude, cityData.longitude));
+  marker(latLng(cityData.latitude, cityData.longitude)).addTo(map).openPopup();
 
   // use setView instead of mapto
 }
@@ -47,7 +43,12 @@ export function mapListeners(
   function onMapClick(e) {
     let longitude = Math.round(e.latlng.lat * 1000) / 1000;
     let latitude = Math.round(e.latlng.lng * 1000) / 1000;
-    callTheWeatherAPI(longitude, latitude, "Selected Location");
+    const cityData: ICityData = {
+      longitude: longitude,
+      latitude: latitude,
+      city: "Selected Location",
+    };
+    callTheWeatherAPI(cityData);
     mapDiv.style.display = "none";
     sevenDayDiv.style.display = "flex";
   }
