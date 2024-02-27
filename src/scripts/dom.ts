@@ -1,4 +1,6 @@
-export function setDOM(results, city) {
+import { ForecastRoot, Series } from "../models/forecast";
+
+export function setDOM(results: ForecastRoot, city: string): void {
   // console.log(results.dataseries[0].date);
   // console.log(results.dataseries[0].temp2m.max);
   // console.log(results.dataseries[0].temp2m.min);
@@ -10,10 +12,10 @@ export function setDOM(results, city) {
   set7dayForecast(results.dataseries);
 }
 
-function setTodayElement(todays_data, city) {
+function setTodayElement(todays_data: Series, city: string): void {
   // todays date
-  let todays_date = getDate(todays_data.date.toString());
-  const monthNames = [
+  const todays_date: Date = getDate(todays_data.date.toString());
+  const monthNames: string[] = [
     "January",
     "February",
     "March",
@@ -27,43 +29,47 @@ function setTodayElement(todays_data, city) {
     "November",
     "December",
   ];
-  let datestring = `${getDayOfWeek(
+  const datestring: string = `${getDayOfWeek(
     todays_date.getDay()
   )}, ${todays_date.getDate()} ${
     monthNames[todays_date.getMonth()]
   } ${todays_date.getFullYear()}`;
-  let todayElement = document.getElementById("todaysdate");
-  todayElement.innerText = datestring;
 
+  const todayElement: HTMLElement | null =
+    document.getElementById("todaysdate");
   // location name
-  let location = document.getElementById("location_name");
-  location.innerText = city;
-
+  const location: HTMLElement | null = document.getElementById("location_name");
   // temp_ranges
-  let temp_ranges = document.getElementById("temp_ranges");
-  temp_ranges.innerText = getTempRangesString(
-    todays_data.temp2m.min,
-    todays_data.temp2m.max
-  );
-
+  const temp_ranges: HTMLElement | null =
+    document.getElementById("temp_ranges");
   // weather description
-  let weatherdescription = getWeatherDescription(todays_data.weather);
-  let weather = document.getElementById("weather_descr");
-  weather.innerText = weatherdescription;
-
+  const weather: HTMLElement | null = document.getElementById("weather_descr");
   // weather icon
-  let icon = document.getElementById("weather_icon");
-  icon.src = getIconSrc(todays_data.weather);
+  const icon: HTMLElement | null = document.getElementById("weather_icon");
+
+  if (todayElement && location && temp_ranges && weather && icon) {
+    todayElement.innerText = datestring;
+    location.innerText = city;
+    temp_ranges.innerText = getTempRangesString(
+      todays_data.temp2m.min,
+      todays_data.temp2m.max
+    );
+    const weatherdescription: string = getWeatherDescription(
+      todays_data.weather
+    );
+    weather.innerText = weatherdescription;
+    icon.setAttribute("src", getIconSrc(todays_data.weather));
+  }
 }
 
-function getDate(datestring) {
-  let year = Number(datestring.substring(0, 4));
-  let month = Number(datestring.substring(4, 6)) - 1;
-  let day = Number(datestring.substring(6, 8));
+function getDate(datestring: string): Date {
+  const year = Number(datestring.substring(0, 4));
+  const month = Number(datestring.substring(4, 6)) - 1;
+  const day = Number(datestring.substring(6, 8));
   return new Date(year, month, day);
 }
 
-function getDayOfWeek(num) {
+function getDayOfWeek(num: number): string {
   const dayNames = [
     "Sunday",
     "Monday",
@@ -77,103 +83,93 @@ function getDayOfWeek(num) {
   return dayNames[num];
 }
 
-function getWeatherDescription(weather) {
+function getWeatherDescription(weather: string): string {
   if (!weather) return "";
 
   switch (weather) {
     case "clear":
       return "Clear";
-      break;
     case "cloudy":
       return "Overcast";
-      break;
     case "lightrain":
       return "Light rain";
-      break;
     case "pcloudy":
       return "Partly cloudy";
-      break;
     case "ts":
       return "Isolated thunderstorms";
-      break;
     case "snow":
       return "Snow";
-      break;
     case "rain":
       return "Rain";
-      break;
     case "tsrain":
       return "Thunderstorm";
-      break;
     case "mcloudy":
       return "Cloudy";
-      break;
     case "humid":
       return "Foggy";
-      break;
     case "oshower":
       return "Occasional showers";
-      break;
     case "ishower":
       return "Isolated showers";
-      break;
     case "lightsnow":
       return "Light snow";
-      break;
     case "rainsnow":
       return "Ice pellets/Freezing rain";
-      break;
     default:
       return "Windy";
   }
 }
 
-function getTempRangesString(mintemp, maxtemp) {
+function getTempRangesString(mintemp: number, maxtemp: number): string {
   return `${mintemp}\xB0C ~ ${maxtemp}\xB0C`;
 }
 
-function set7dayForecast(forecast_data) {
-  let seven_day_forecast = document.getElementById("seven_day_forecast");
-  seven_day_forecast.innerHTML = "";
-  forecast_data.forEach((day) => {
-    let forecast_element = setDay(day);
-    seven_day_forecast.appendChild(forecast_element);
-  });
+function set7dayForecast(forecast_data: Series[]): void {
+  let seven_day_forecast: HTMLElement | null =
+    document.getElementById("seven_day_forecast");
+  if (seven_day_forecast) {
+    seven_day_forecast.innerHTML = "";
+
+    for (let day of forecast_data) {
+      const forecast_element: HTMLDivElement = setDay(day);
+      seven_day_forecast.appendChild(forecast_element);
+    }
+  }
 }
 
-function setDay(days_data) {
-  const forecast_item = document.createElement("div");
+function setDay(days_data: Series): HTMLDivElement {
+  let forecast_item: HTMLDivElement = document.createElement("div");
   forecast_item.className = "forecast_item";
 
   // day
-  let day_date = getDate(days_data.date.toString());
-  let day = getDayOfWeek(day_date.getDay());
+  const day_date: Date = getDate(days_data.date.toString());
+  const day: string = getDayOfWeek(day_date.getDay());
 
-  const forecast_day = document.createElement("div");
+  const forecast_day: HTMLDivElement = document.createElement("div");
   forecast_day.className = "forecast_day";
   forecast_day.innerText = day;
   forecast_item.appendChild(forecast_day);
 
   // icon
-  const forecast_icon = document.createElement("img");
+  const forecast_icon: HTMLImageElement = document.createElement("img");
   forecast_icon.className = "forecast_icon";
   forecast_icon.src = getIconSrc(days_data.weather);
   forecast_item.appendChild(forecast_icon);
 
   // temp ranges
-  let temp_ranges = getTempRangesString(
+  const temp_ranges: string = getTempRangesString(
     days_data.temp2m.min,
     days_data.temp2m.max
   );
-  const forecast_temp_ranges = document.createElement("div");
+  const forecast_temp_ranges: HTMLDivElement = document.createElement("div");
   forecast_temp_ranges.className = "forecast_temp_ranges";
   forecast_temp_ranges.innerText = temp_ranges;
   forecast_item.appendChild(forecast_temp_ranges);
 
   //description
-  let weather_description = getWeatherDescription(days_data.weather);
+  const weather_description: string = getWeatherDescription(days_data.weather);
 
-  const forecast_descr = document.createElement("div");
+  const forecast_descr: HTMLDivElement = document.createElement("div");
   forecast_descr.className = "forecast_descr";
   forecast_descr.innerText = weather_description;
   forecast_item.appendChild(forecast_descr);
@@ -181,52 +177,38 @@ function setDay(days_data) {
   return forecast_item;
 }
 
-function getIconSrc(weather) {
+function getIconSrc(weather: string): string {
   if (!weather) return "";
 
   switch (weather) {
     case "clear":
       return "icons/clear.png";
-      break;
     case "cloudy":
       return "icons/overcast.png";
-      break;
     case "lightrain":
       return "icons/raining.png";
-      break;
     case "pcloudy":
       return "icons/pcloudy.png";
-      break;
     case "ts":
       return "icons/storm.png";
-      break;
     case "snow":
       return "icons/snow.png";
-      break;
     case "rain":
       return "icons/raining.png";
-      break;
     case "tsrain":
       return "icons/storm.png";
-      break;
     case "mcloudy":
       return "icons/pcloudy.png";
-      break;
     case "humid":
       return "icons/fog.png";
-      break;
     case "oshower":
       return "icons/raining.png";
-      break;
     case "ishower":
       return "icons/raining.png";
-      break;
     case "lightsnow":
       return "icons/snow.png";
-      break;
     case "rainsnow":
       return "icons/snow.png";
-      break;
     default:
       return "icons/wind.png";
   }
