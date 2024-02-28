@@ -19,21 +19,21 @@ body {
     font: small-caps bold 3rem sans-serif;
   }
 
-  #todaysdate {
+  #todays-date {
     height: 1.2rem;
     /* background-color: aqua; */
     font: 0.85rem sans-serif;
   }
 }
 
-.major_cities_scroll {
+.major-cities-scroll {
   margin-bottom: 1.5rem;
   background-color: white;
   overflow: auto;
   white-space: nowrap;
 }
 
-.major_cities_scroll a {
+.major-cities-scroll a {
   display: inline-block;
   color: black;
   text-align: center;
@@ -41,15 +41,15 @@ body {
   text-decoration: none;
 }
 
-.major_cities_scroll a:hover {
+.major-cities-scroll a:hover {
   background-color: lightskyblue;
 }
 
-.weather_and_map {
+.weather-and-map {
   display: flex;
   flex-direction: column;
 
-  .forecast_today {
+  .forecast-today {
     flex: 1 0 auto;
     display: grid;
     height: 7rem;
@@ -58,71 +58,71 @@ body {
     grid-template-columns: 2fr 1fr;
     grid-template-rows: 1fr 1fr 0.5fr;
     grid-template-areas:
-      "location_name weather_icon"
-      "temp_ranges weather_icon"
-      "weather_descr weather_icon";
+      "location-name weather-icon"
+      "temp-ranges weather-icon"
+      "weather-descr weather-icon";
     background-color: lightskyblue;
 
-    #location_name {
-      grid-area: location_name;
+    #location-name {
+      grid-area: location-name;
       font: small-caps 2rem sans-serif;
     }
 
-    #temp_ranges {
-      grid-area: temp_ranges;
+    #temp-ranges {
+      grid-area: temp-ranges;
       font-size: 2rem;
     }
 
-    #weather_descr {
-      grid-area: weather_descr;
+    #weather-descr {
+      grid-area: weather-descr;
       font-size: 1rem;
     }
 
-    #weather_icon {
+    #weather-icon {
       height: 6rem;
-      grid-area: weather_icon;
+      grid-area: weather-icon;
     }
   }
 
-  #seven_day_forecast {
+  #seven-day-forecast {
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
 
-    .forecast_item {
+    .forecast-item {
       display: grid;
       height: 4rem;
       grid-template-columns: 2fr 1fr 2.5fr;
       grid-template-rows: 1.5fr 1fr;
       grid-template-areas:
-        "forecast_day forecast_icon forecast_temp_ranges"
-        "forecast_day forecast_icon forecast_descr";
+        "forecast-day forecast-icon forecast-temp-ranges"
+        "forecast-day forecast-icon forecast-descr";
 
-      .forecast_day {
-        grid-area: forecast_day;
+      .forecast-day {
+        grid-area: forecast-day;
         align-self: center;
         justify-self: end;
         padding: 1rem;
         font-size: 1.2rem;
       }
-      .forecast_icon {
+      .forecast-icon {
         height: 3rem;
-        grid-area: forecast_icon;
+        grid-area: forecast-icon;
       }
-      .forecast_temp_ranges {
-        grid-area: forecast_temp_ranges;
+      .forecast-temp-ranges {
+        grid-area: forecast-temp-ranges;
         align-self: end;
         font-size: 1.5rem;
       }
-      .forecast_descr {
-        grid-area: forecast_descr;
+      .forecast-descr {
+        grid-area: forecast-descr;
         font-size: 1rem;
       }
     }
   }
 
-  #map_button_float {
+  #map-button-float {
     position: fixed;
     width: 4rem;
     height: 2rem;
@@ -136,7 +136,7 @@ body {
     box-shadow: 2px 2px 3px #999;
   }
 
-  #map_container {
+  #map-container {
     display: none;
     /* height: 100%; */
     width: 92%;
@@ -150,7 +150,7 @@ body {
 }
 
 @media screen and (min-width: 650px) {
-  .weather_and_map {
+  .weather-and-map {
     flex-direction: row;
     align-items: center;
   }
