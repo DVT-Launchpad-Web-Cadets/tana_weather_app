@@ -33,14 +33,16 @@ openMap.addEventListener("click", () => mapDisplayToggle(mapDiv, sevenDayDiv));
 map.on("click", onMapClick);
 
 function onMapClick(e: { latlng: { lat: number; lng: number } }) {
-  let longitude = Math.round(e.latlng.lat * 1000) / 1000;
-  let latitude = Math.round(e.latlng.lng * 1000) / 1000;
+  const lng = Math.round(e.latlng.lat * 1000) / 1000;
+  const lat = Math.round(e.latlng.lng * 1000) / 1000;
   const cityData: ICityData = {
-    longitude: longitude,
-    latitude: latitude,
+    longitude: lng,
+    latitude: lat,
     cityName: "Selected Location",
   };
+  currentCity = cityData;
   weatherFetchRequest$.next(cityData);
+
   mapDiv.style.display = "none";
   sevenDayDiv.style.display = "flex";
 }
