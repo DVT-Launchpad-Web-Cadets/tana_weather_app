@@ -7,9 +7,9 @@ import { fromPromise } from "rxjs/internal/observable/innerFrom";
 export const weatherFetchRequest$ = new ReplaySubject<ICityData>();
 
 export const weatherResultSet$ = weatherFetchRequest$.pipe(
-  switchMap((event) =>
+  switchMap((city) =>
     fromFetch(
-      `http://www.7timer.info/bin/api.pl?lon=${event.longitude}&lat=${event.latitude}&product=civillight&output=json`
+      `http://www.7timer.info/bin/api.pl?lon=${city.longitude}&lat=${city.latitude}&product=civillight&output=json`
     ).pipe(
       switchMap((res) => fromPromise<IForecastRoot>(res.json())),
       map((json) => ({
@@ -24,7 +24,7 @@ export const weatherResultSet$ = weatherFetchRequest$.pipe(
     )
   ),
   catchError((error) => {
-    console.log("API Call has failed: ", error);
+    console.error("API Call has failed: ", error);
     return EMPTY;
   })
 );
