@@ -1,44 +1,30 @@
 import { IForecastRoot } from "../models/forecast";
 import { ICityData } from "../models/cityData.js";
-import { callTheWeatherAPI } from "./index.js";
+import { EMPTY, catchError, switchMap, map, ReplaySubject } from "rxjs";
+import { fromFetch } from "rxjs/fetch";
+import { fromPromise } from "rxjs/internal/observable/innerFrom";
 
-export function getWeatherData(
-  longitude: number,
-  latitude: number
-): Promise<IForecastRoot> {
-  return fetch(
-    `http://www.7timer.info/bin/api.pl?lon=${longitude}&lat=${latitude}&product=civillight&output=json`
-  ).then((response) => response.json());
-}
+export const weatherFetchRequest$ = new ReplaySubject<ICityData>();
 
-export async function getCityCoords(city: string): Promise<void> {
-  await fetch("../coordinates.json")
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(
-          `Error! Cannot get the coordinates. Status: ${res.status}`
-        );
-      }
-      return res.json();
-    })
-    .then((data) => {
-      // returns the coordinates of the city
-      if (
-        !(
-          data?.majorCities[0][city][0]?.long &&
-          data?.majorCities[0][city][0]?.lat
-        )
-      ) {
-        throw new Error("Cannot get the coordinates.");
-      }
-      const longitude: number = data.majorCities[0][city][0].long;
-      const latitude: number = data.majorCities[0][city][0].lat;
-      const cityData: ICityData = {
-        longitude: longitude,
-        latitude: latitude,
-        city: city,
-      };
-      callTheWeatherAPI(cityData);
-    })
-    .catch((error) => console.error("Unable to fetch data:", error));
-}
+export const weatherResultSet$ = weatherFetchRequest$.pipe(
+  switchMap((event) =>
+    fromFetch(
+      `http://www.7timer.info/bin/api.pl?lon=${event.longitude}&lat=${event.latitude}&product=civillight&output=json`
+    ).pipe(
+      switchMap((res) => fromPromise<IForecastRoot>(res.json())),
+      map((json) => ({
+        product: json.product,
+        init: json.init,
+        dataseries: json.dataseries,
+      })),
+      catchError((error) => {
+        console.error("JSON Parsing has failed: ", error);
+        return EMPTY;
+      })
+    )
+  ),
+  catchError((error) => {
+    console.log("API Call has failed: ", error);
+    return EMPTY;
+  })
+);

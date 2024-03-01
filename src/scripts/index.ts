@@ -1,16 +1,18 @@
-import { Map } from "leaflet";
-import { getWeatherData, getCityCoords } from "./api.ts";
+import { weatherFetchRequest$, weatherResultSet$ } from "./api.ts";
 import { setDOM } from "./dom.ts";
 import { initilizeMap, updateMap, mapListeners } from "./map.ts";
 import { ICityData } from "../models/cityData";
+import { majorCitiesData } from "../coordinates.ts";
 
 // GLOBAL VARIABLES
-const map: Map = initilizeMap();
+let currentCity = majorCitiesData[0];
+console.log("Current city: ", currentCity.cityName);
 
-// EVENT LISTENERSSS
-window.addEventListener("load", (event) => {
-  getCityCoords("Johannesburg");
-});
+const map = initilizeMap(currentCity);
+
+// Loading current location on start up
+weatherFetchRequest$.next(currentCity);
+subscribeToWeatherAPI(currentCity);
 
 // map listeners
 const mapDiv = document.getElementById("map-container") as HTMLElement;
@@ -32,17 +34,53 @@ const getMajorCities: NodeListOf<HTMLElement> =
 const majorCities: HTMLElement[] = Array.from(getMajorCities);
 
 for (const city of majorCities) {
-  city.addEventListener("click", function (e) {
-    getCityCoords(city.innerText);
+  city.addEventListener("click", function () {
+    console.log("this is running");
+    const cityData = getCityCoords(city.innerText);
+
+    if (Object.keys(cityData).length === 0) {
+      throw new Error(`No data for ${city.innerText}`);
+    }
+    weatherFetchRequest$.next(cityData);
+    subscribeToWeatherAPI(cityData);
+    // weatherObservable$.unsubscribe();
   });
 }
 
-export function callTheWeatherAPI(cityData: ICityData): void {
-  getWeatherData(cityData.longitude, cityData.latitude)
-    .then((res) => {
-      // mapping of results
-      setDOM(res, cityData.city);
-      updateMap(map, cityData);
-    })
-    .catch(console.error);
+export function getCityCoords(city: string): ICityData {
+  for (const majorCity of majorCitiesData) {
+    if (majorCity.cityName === city) {
+      console.log(majorCity.cityName);
+      return majorCity;
+    }
+  }
+  return {} as ICityData;
 }
+
+export function subscribeToWeatherAPI(cityData: ICityData): void {
+  // console.log("hello 2");
+
+  // weatherFetchRequest$.next(cityData);
+
+  // console.log("hello 3");
+  console.log("in the subscribe to weather api function");
+
+  weatherResultSet$.subscribe((res) => {
+    console.log("subscribed");
+    console.log(res);
+    setDOM(res, cityData.cityName);
+    updateMap(map, cityData);
+  });
+
+  // console.log("hello 4");
+}
+
+// export function callTheWeatherAPI(cityData: ICityData): void {
+//   getWeatherData(cityData.longitude, cityData.latitude)
+//     .then((res) => {
+//       // mapping of results
+//       setDOM(res, cityData.city);
+//       updateMap(map, cityData);
+//     })
+//     .catch(console.error);
+// }

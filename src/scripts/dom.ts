@@ -1,14 +1,15 @@
 import { IForecastRoot, ISeries } from "../models/forecast";
+import { monthNames, dayNames } from "../monthAndDateNames";
 
-export function setDOM(results: IForecastRoot, city: string): void {
+export function setDOM(results: IForecastRoot, cityName: string): void {
   if (!(results?.dataseries && results?.dataseries[0])) {
     throw new Error("No weather results found.");
   }
-  setTodayElement(results.dataseries[0], city);
+  setTodayElement(results.dataseries[0], cityName);
   set7dayForecast(results.dataseries);
 }
 
-function setTodayElement(todaysWeatherData: ISeries, city: string): void {
+function setTodayElement(todaysWeatherData: ISeries, cityName: string): void {
   if (
     !(
       todaysWeatherData?.date &&
@@ -22,23 +23,9 @@ function setTodayElement(todaysWeatherData: ISeries, city: string): void {
 
   // todays date
   const todaysDate: Date = getDate(todaysWeatherData.date.toString());
-  const monthNames: string[] = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  const dateString: string = `${getDayOfWeek(
-    todaysDate.getDay()
-  )}, ${todaysDate.getDate()} ${
+  const dateString: string = `${
+    dayNames[todaysDate.getDay()]
+  }, ${todaysDate.getDate()} ${
     monthNames[todaysDate.getMonth()]
   } ${todaysDate.getFullYear()}`;
 
@@ -57,7 +44,7 @@ function setTodayElement(todaysWeatherData: ISeries, city: string): void {
   }
 
   todayElement.innerText = dateString;
-  locationName.innerText = city;
+  locationName.innerText = cityName;
   tempRanges.innerText = getTempRangesString(
     todaysWeatherData.temp2m.min,
     todaysWeatherData.temp2m.max
@@ -74,20 +61,6 @@ function getDate(dateString: string): Date {
   const month = Number(dateString.substring(4, 6)) - 1;
   const day = Number(dateString.substring(6, 8));
   return new Date(year, month, day);
-}
-
-function getDayOfWeek(num: number): string {
-  const dayNames = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-
-  return dayNames[num];
 }
 
 function getWeatherDescription(weather: string): string {
@@ -149,8 +122,8 @@ function setDay(daysData: ISeries): HTMLDivElement {
   if (
     !(
       daysData?.date &&
-      daysData?.temp2m?.min &&
-      daysData?.temp2m?.max &&
+      daysData?.temp2m &&
+      daysData?.temp2m &&
       daysData?.weather
     )
   ) {
@@ -162,7 +135,7 @@ function setDay(daysData: ISeries): HTMLDivElement {
 
   // day
   const dayDate = getDate(daysData.date.toString());
-  const day = getDayOfWeek(dayDate.getDay());
+  const day = dayNames[dayDate.getDay()];
 
   const forecastDay = document.createElement("div");
   forecastDay.className = "forecast-day";
@@ -196,7 +169,10 @@ function setDay(daysData: ISeries): HTMLDivElement {
   return forecastItem;
 }
 
-export function mapDisplayToggle(mapDiv, sevenDayDiv) {
+export function mapDisplayToggle(
+  mapDiv: HTMLElement,
+  sevenDayDiv: HTMLElement
+) {
   if (mapDiv.style.display === "block") {
     mapDiv.style.display = "none";
     sevenDayDiv.style.display = "flex";
