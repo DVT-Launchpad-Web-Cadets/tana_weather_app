@@ -1,8 +1,9 @@
 import { weatherFetchRequest$, weatherResultSet$ } from "./api.ts";
 import { setDOM } from "./dom.ts";
-import { initilizeMap, updateMap, mapListeners } from "./map.ts";
+import { initilizeMap, updateMap } from "./map.ts";
 import { ICityData } from "../models/cityData";
 import { majorCitiesData } from "../coordinates.ts";
+import { mapDisplayToggle } from "./dom.ts";
 
 // GLOBAL VARIABLES
 let currentCity = majorCitiesData[0];
@@ -26,7 +27,23 @@ const openMap = document.getElementById("map-button-float") as HTMLElement;
 if (!(mapDiv || sevenDayDiv || openMap)) {
   throw new Error("Cannot find the map, or the 7 day forecast div");
 }
-mapListeners(map, mapDiv, sevenDayDiv, openMap);
+
+openMap.addEventListener("click", () => mapDisplayToggle(mapDiv, sevenDayDiv));
+
+map.on("click", onMapClick);
+
+function onMapClick(e: { latlng: { lat: number; lng: number } }) {
+  let longitude = Math.round(e.latlng.lat * 1000) / 1000;
+  let latitude = Math.round(e.latlng.lng * 1000) / 1000;
+  const cityData: ICityData = {
+    longitude: longitude,
+    latitude: latitude,
+    cityName: "Selected Location",
+  };
+  weatherFetchRequest$.next(cityData);
+  mapDiv.style.display = "none";
+  sevenDayDiv.style.display = "flex";
+}
 
 // The user should be able to click on a major city
 // to get the weather for that location
@@ -48,10 +65,5 @@ for (const city of majorCities) {
 }
 
 export function getCityCoords(city: string): ICityData {
-  for (const majorCity of majorCitiesData) {
-    if (majorCity.cityName === city) {
-      return majorCity;
-    }
-  }
-  return {} as ICityData;
+  return majorCitiesData.find((cityObj) => cityObj.cityName === city)!; //asserted because it is static data
 }
