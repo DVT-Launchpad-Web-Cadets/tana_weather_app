@@ -1,18 +1,19 @@
 import { weatherFetchRequest$, weatherResultSet$ } from "./api.ts";
-import { setDOM } from "./dom.ts";
+import { setDOM, mapDisplayToggle } from "./dom.ts";
 import { initilizeMap, updateMap } from "./map.ts";
 import { ICityData } from "../models/cityData";
 import { majorCitiesData } from "../coordinates.ts";
-import { mapDisplayToggle } from "./dom.ts";
+import { storeWeather, retrieveWeather } from "./localStorage.ts";
 
 // GLOBAL VARIABLES
 let currentCity = majorCitiesData[0];
 const map = initilizeMap(currentCity);
 
 // Loading current location on start up
-weatherFetchRequest$.next(currentCity);
+getWeatherAPIOrStorageData(currentCity);
 
 weatherResultSet$.subscribe((res) => {
+  storeWeather(currentCity, res);
   setDOM(res, currentCity.cityName);
   updateMap(map, currentCity);
 });
@@ -41,7 +42,7 @@ function onMapClick(e: { latlng: { lat: number; lng: number } }) {
     cityName: "Selected Location",
   };
   currentCity = cityData;
-  weatherFetchRequest$.next(cityData);
+  getWeatherAPIOrStorageData(cityData);
 
   mapDiv.style.display = "none";
   sevenDayDiv.style.display = "flex";
@@ -62,10 +63,20 @@ for (const city of majorCities) {
       throw new Error(`No data for ${city.innerText}`);
     }
     currentCity = cityData;
-    weatherFetchRequest$.next(cityData);
+    getWeatherAPIOrStorageData(cityData);
   });
 }
 
 export function getCityCoords(city: string): ICityData {
   return majorCitiesData.find((cityObj) => cityObj.cityName === city)!; //asserted because it is static data
+}
+
+function getWeatherAPIOrStorageData(cityData: ICityData) {
+  const weather = retrieveWeather(cityData.cityName);
+  if (typeof weather === "string") {
+    weatherFetchRequest$.next(cityData);
+  } else {
+    setDOM(weather.forecastData, cityData.cityName);
+    updateMap(map, cityData);
+  }
 }
