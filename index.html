@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>7-day Weather Forecast</title>
 
-    <link rel="stylesheet" href="styles.css" />
-    <link
+    <!-- <link rel="stylesheet" href="styles.css" /> -->
+    <link rel="stylesheet" href="/.dist/output.css" />
+    <!-- <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.8.1/css/solid.css"
-    />
+    /> -->
     <script
       src="https://kit.fontawesome.com/0d9546a1f6.js"
       crossorigin="anonymous"
@@ -26,32 +27,42 @@
       crossorigin=""
     ></script>
   </head>
-  <body>
-    <div class="container">
-      <div class="heading">
-        <span>Weather</span>
-        <div id="todays-date"></div>
+  <body class="min-w-96 p-0 m-0 h-100svh bg-white">
+    <div class="container overflow-hidden p-4">
+      <div class="heading text-[black] mb-4">
+        <span class="font-sans font-bold text-5xl uppercase tracking-wide">
+      Weather</span>
+        <div id="todays-date" class="h-3.5 text-xl font-sans"></div>
       </div>
-      <div class="major-cities-scroll">
-        <a href="#">Johannesburg</a>
-        <a href="#">Cape Town</a>
-        <a href="#">London</a>
-        <a href="#">Los Angeles</a>
-        <a href="#">New York</a>
-        <a href="#">Toronto</a>
-        <a href="#">Melbourne</a>
+      <div class="major-cities-scroll bg-[white] overflow-auto whitespace-nowrap mb-6">
+        <a class="inline-block text-black text-center no-underline p-3.5 hover:bg-blue-400" href="#">Johannesburg</a>
+        <a class="inline-block text-black text-center no-underline p-3.5 hover:bg-blue-400" href="#">Cape Town</a>
+        <a class="inline-block text-black text-center no-underline p-3.5 hover:bg-blue-400" href="#">London</a>
+        <a class="inline-block text-black text-center no-underline p-3.5 hover:bg-blue-400" href="#">Los Angeles</a>
+        <a class="inline-block text-black text-center no-underline p-3.5 hover:bg-blue-400" href="#">New York</a>
+        <a class="inline-block text-black text-center no-underline p-3.5 hover:bg-blue-400" href="#">Toronto</a>
+        <a class="inline-block text-black text-center no-underline p-3.5 hover:bg-blue-400" href="#">Melbourne</a>
       </div>
-      <div class="weather-and-map">
-        <div class="forecast-today">
-          <img id="weather-icon"></img>
-          <div id="location-name"></div>
-          <div id="temp-ranges"></div>
-          <div id="weather-descr"></div>
-        </div>
-        <div id="seven-day-forecast">
+      <div class="weather-and-map flex flex-col">
 
+        <div id="forecast-today" class="flex w-full">
+          <div id="forecast-text" class="grid h-1 flex-grow card bg-base-300 rounded-box place-items-center">
+            <span id="location-name" class="uppercase text-3xl font-sans"></span> 
+            <br> 
+            <span id="temp-ranges" class="text-3xl"></span> 
+            <br> 
+            <span id="weather-descr" class="text-xl"></span>
+          </div>  
+          <div class="divider divider-horizontal"></div>
+          <div class="grid h-1 flex-grow card bg-base-300 rounded-box place-items-center">
+            <img id="weather-icon"></img>
+          </div>
+          
+          </div>
+
+        <div class="flex flex-grow-1 flex-shrink-0 flex-col gap-1 p-4" id="seven-day-forecast">
         </div>
-        <a href="#" id="map-button-float">
+        <a href="#" id="map-button-float" class="fixed w-16 h-8 top-4 right-4 bg-blue-500 text-white rounded-full text-center text-lg shadow-md">
           <i class="fa-solid fa-map-location-dot"></i>
         </a>
         <div id="map-container">

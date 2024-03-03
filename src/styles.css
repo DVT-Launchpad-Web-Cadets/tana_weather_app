@@ -1,55 +1,58 @@
-body {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* body {
   margin: 0;
   width: 100vw;
   min-width: 375px;
   height: 100svh;
   background-color: white;
   font-family: Arial, Helvetica, sans-serif;
-}
+} */
 
-.container {
+/* .container {
   padding: 1rem;
   overflow: hidden;
-}
+} */
 
 .heading {
-  color: black;
-  margin-bottom: 1rem;
-  span {
+  /* color: black;
+  margin-bottom: 1rem; */
+  /* span {
     font: small-caps bold 3rem sans-serif;
-  }
+  } */
 
-  #todays-date {
+  /* #todays-date {
     height: 1.2rem;
-    /* background-color: aqua; */
     font: 0.85rem sans-serif;
-  }
+  } */
 }
 
-.major-cities-scroll {
+/* .major-cities-scroll {
   margin-bottom: 1.5rem;
   background-color: white;
   overflow: auto;
   white-space: nowrap;
-}
+} */
 
-.major-cities-scroll a {
+/* .major-cities-scroll a {
   display: inline-block;
   color: black;
   text-align: center;
   padding: 0.8rem;
   text-decoration: none;
-}
+} */
 
-.major-cities-scroll a:hover {
+/* .major-cities-scroll a:hover {
   background-color: lightskyblue;
-}
+} */
 
-.weather-and-map {
+/* .weather-and-map {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; */
 
-  .forecast-today {
+/* .forecast-today {
     flex: 1 0 auto;
     display: grid;
     height: 7rem;
@@ -82,13 +85,13 @@ body {
       height: 6rem;
       grid-area: weather-icon;
     }
-  }
+  } */
 
-  #seven-day-forecast {
+/*#seven-day-forecast {
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.2rem; 
 
     .forecast-item {
       display: grid;
@@ -121,8 +124,8 @@ body {
       }
     }
   }
-
-  #map-button-float {
+*/
+/* #map-button-float {
     position: fixed;
     width: 4rem;
     height: 2rem;
@@ -134,20 +137,19 @@ body {
     text-align: center;
     font-size: 25px;
     box-shadow: 2px 2px 3px #999;
-  }
+  } */
 
-  #map-container {
-    display: none;
-    /* height: 100%; */
-    width: 92%;
-    position: fixed;
-    background-color: greenyellow;
+#map-container {
+  display: none;
+  width: 92%;
+  position: fixed;
+  background-color: greenyellow;
 
-    #map {
-      height: 375px;
-    }
+  #map {
+    height: 375px;
   }
 }
+/* } */
 
 @media screen and (min-width: 650px) {
   .weather-and-map {

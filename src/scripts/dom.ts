@@ -101,7 +101,7 @@ function getWeatherDescription(weather: string): string {
 }
 
 function getTempRangesString(minTemp: number, maxTemp: number): string {
-  return `${minTemp}\xB0C ~ ${maxTemp}\xB0C`;
+  return `${minTemp}\xB0C / ${maxTemp}\xB0C`;
 }
 
 function set7dayForecast(forecastData: ISeries[]): void {
@@ -131,41 +131,47 @@ function setDay(daysData: ISeries): HTMLDivElement {
   }
 
   const forecastItem = document.createElement("div");
-  forecastItem.className = "forecast-item";
+  forecastItem.className =
+    "forecast-item flex flex-grow-1 flex-shrink-0 gap-3 justify-between";
 
   // day
   const dayDate = getDate(daysData.date.toString());
   const day = dayNames[dayDate.getDay()];
 
   const forecastDay = document.createElement("div");
-  forecastDay.className = "forecast-day";
+  forecastDay.className = "forecast-day self-center text-xl";
   forecastDay.innerText = day;
   forecastItem.appendChild(forecastDay);
 
   // icon
   const forecastIcon = document.createElement("img");
-  forecastIcon.className = "forecast-icon";
+  forecastIcon.className = "forecast-icon w-12 h-12";
   forecastIcon.src = getIconSrc(daysData.weather);
   forecastItem.appendChild(forecastIcon);
+
+  // ranges and descriptions
+  const forecastRangesAndDescr = document.createElement("div");
+  forecastRangesAndDescr.className = "place-self-end";
 
   // temp ranges
   const tempRanges = getTempRangesString(
     daysData.temp2m.min,
     daysData.temp2m.max
   );
-  const forecastTempRanges = document.createElement("div");
-  forecastTempRanges.className = "forecast-temp-ranges";
-  forecastTempRanges.innerText = tempRanges;
-  forecastItem.appendChild(forecastTempRanges);
+  const forecastTempRanges = document.createElement("span");
+  forecastTempRanges.className = "forecast-temp-ranges text-2xl";
+  forecastTempRanges.innerHTML = `${tempRanges} <br>`;
+  forecastRangesAndDescr.appendChild(forecastTempRanges);
 
   //description
   const weatherDescription = getWeatherDescription(daysData.weather);
 
-  const forecastDescription = document.createElement("div");
-  forecastDescription.className = "forecast-descr";
+  const forecastDescription = document.createElement("span");
+  forecastDescription.className = "forecast-descr text-base";
   forecastDescription.innerText = weatherDescription;
-  forecastItem.appendChild(forecastDescription);
+  forecastRangesAndDescr.appendChild(forecastDescription);
 
+  forecastItem.appendChild(forecastRangesAndDescr);
   return forecastItem;
 }
 
