@@ -3,6 +3,7 @@ export default {
   content: ["./index.html", "./src/*.{html,ts}", "./src/**/*.{html,ts}"],
   theme: {
     extend: {
+      // WILL POSSIBLY USE THIS LATER
       //   gridTemplateColumns: {
       //     "forecast-today": "2fr 1fr",
       //     "forecast-item": "2fr 1fr 2.5fr",
